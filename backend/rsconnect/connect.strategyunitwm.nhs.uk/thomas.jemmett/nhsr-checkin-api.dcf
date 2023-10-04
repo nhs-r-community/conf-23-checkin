@@ -1,0 +1,12 @@
+name: nhsr-checkin-api
+title: nhsr-checkin-api
+username: thomas.jemmett
+account: thomas.jemmett
+server: connect.strategyunitwm.nhs.uk
+hostUrl: https://connect.strategyunitwm.nhs.uk/__api__
+appId: 151
+bundleId: 813
+url: https://connect.strategyunitwm.nhs.uk/content/ea7ebc97-43ad-4653-a40c-a415dc98c1dc/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
