@@ -83,3 +83,22 @@ check_attendee <- function(id, day = c("T", "W")) {
   r
 }
 
+search_attendee_by_email <- function(email) {
+  con <- db_con()
+  res <- DBI::dbSendQuery(con, "SELECT DISTINCT id FROM attendees WHERE email = ?")
+  withr::defer(DBI::dbClearResult(res))
+  DBI::dbBind(res, list(email))
+  DBI::dbFetch(res)$id
+}
+
+get_attendees <- function(day = c("T", "W")) {
+  day <- match.arg(day)
+
+  con <- db_con()
+  res <- DBI::dbSendQuery(con, "SELECT id, name, email, type, checked_in FROM attendees WHERE day = ?")
+  withr::defer(DBI::dbClearResult(res))
+
+  DBI::dbBind(res, list(day))
+  DBI::dbFetch(res)
+}
+

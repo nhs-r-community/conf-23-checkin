@@ -1,40 +1,20 @@
 import { QrScanner } from '@yudiel/react-qr-scanner';
 import React, { useState } from 'react';
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Modal from 'react-bootstrap/Modal';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import CheckInModal from './CheckInModal';
+import ManualCheckin from './ManualCheckin';
+
 const styles = {
   container: {
-    "width": "100%",
-    "max-width": "600px",
-    "margin": 'auto'
+    width: "100%",
+    maxWidth: "600px",
+    margin: 'auto'
   }
 }
 
-function CheckIn({ results, handleClose }) {
-  return (
-    <>
-      <Modal show={results !== undefined} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{results?.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{results?.body}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
-
-}
 
 function App() {
   const [results, setResults] = useState();
@@ -81,15 +61,8 @@ function App() {
       });
   }
 
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  function manualSearch() {
-    console.log("manual: ", email)
-    setEmail("");
-  }
-
   return (
-    <div class="mx-2">
+    <div className="mx-2">
       <h1>Conference Check In</h1>
       <div style={styles.container}>
         <QrScanner
@@ -97,36 +70,10 @@ function App() {
           onError={(error) => console.log(error?.message)}
         />
       </div>
-      <CheckIn results={results} handleClose={handleClose} />
       <br />
+      <ManualCheckin checkIn={checkIn} />
 
-      <Form.Group>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-          <Form.Control
-            placeholder="Email"
-            aria-label="Email"
-            aria-describedby="basic-addon1"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <Button variant="primary" onClick={manualSearch}>Check-In</Button>
-        </InputGroup>
-      </Form.Group>
-
-      <Form.Group>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">Name</InputGroup.Text>
-          <Form.Control
-            placeholder="Name"
-            aria-label="Name"
-            aria-describedby="basic-addon1"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <Button variant="primary" onClick={manualSearch}>Search</Button>
-        </InputGroup>
-      </Form.Group>
+      <CheckInModal results={results} handleClose={handleClose} />
     </div>
   );
 }
