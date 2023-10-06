@@ -29,8 +29,8 @@ add_attendee <- function(name, email, type = c("attendee", "speaker", "organiser
 
   df <- data.frame(
     id = id,
-    name = "Tom Jemmett",
-    email = "thomas.jemmett@nhs.net",
+    name = name,
+    email = email,
     type = type,
     day = days,
     checked_in = 0
