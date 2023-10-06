@@ -1,11 +1,11 @@
 import { QrScanner } from '@yudiel/react-qr-scanner';
 import React, { useState } from 'react';
 
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Button from 'react-bootstrap/Button';
+import Attendees from './Attendees';
 import CheckInModal from './CheckInModal';
-import ManualCheckin from './ManualCheckin';
 
 const styles = {
   container: {
@@ -15,14 +15,15 @@ const styles = {
   }
 }
 
-
 function App() {
   const [results, setResults] = useState();
   const [scanning, setScanning] = useState(true);
+  const [showAttendees, setShowAttendees] = useState(false);
 
   const handleClose = () => {
     setResults(undefined);
     setScanning(true);
+    setShowAttendees(false);
   }
 
   function checkIn(id) {
@@ -64,15 +65,30 @@ function App() {
   return (
     <div className="mx-2">
       <h1>Conference Check In</h1>
-      <div style={styles.container}>
-        <QrScanner
-          onDecode={checkIn}
-          onError={(error) => console.log(error?.message)}
-        />
-      </div>
-      <br />
-      <ManualCheckin checkIn={checkIn} />
+      {
+        !showAttendees && <>
+          <div style={styles.container}>
+            <QrScanner
+              onDecode={checkIn}
+              onError={(error) => console.log(error?.message)}
+            />
+          </div>
+          <br />
 
+          <Button variant="primary" onClick={() => setShowAttendees(true)}>
+            Show Attendees
+          </Button>
+
+        </>
+      }
+      {
+        showAttendees && <>
+          <Button variant="danger" onClick={() => setShowAttendees(false)}>
+            Hide Attendees
+          </Button>
+          <Attendees checkIn={checkIn} />
+        </>
+      }
       <CheckInModal results={results} handleClose={handleClose} />
     </div>
   );
