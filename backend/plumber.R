@@ -38,8 +38,7 @@ function(res, req, id, time = as.integer(Sys.time())) {
       checkin(id, "T", time = as.integer(time))
     },
     error = \(e) {
-      res$status <- switch(
-        e$message,
+      res$status <- switch(e$message,
         "attendee not found" = 404,
         "already checked in" = 400,
         500
@@ -88,8 +87,7 @@ function(res, req, day) {
       get_attendees(day)
     },
     error = \(e) {
-      res$status <- switch(
-        e$message,
+      res$status <- switch(e$message,
         "'arg' should be one of “T”, “W”" = 400,
         500
       )
@@ -99,5 +97,4 @@ function(res, req, day) {
       )
     }
   )
-
 }

@@ -48,8 +48,7 @@ checkin <- function(id, day = c("T", "W"), time = as.integer(Sys.time())) {
 
   stopifnot(
     "attendee not found" = nrow(attendee) != 0,
-    # TODO: enable this
-    "already checked in" = TRUE # is.na(attendee$checked_in) || time == 0
+    "already checked in" = is.na(attendee$checked_in) || time == 0
   )
 
   con <- db_con()
@@ -101,4 +100,3 @@ get_attendees <- function(day = c("T", "W")) {
   DBI::dbBind(res, list(day))
   DBI::dbFetch(res)
 }
-
