@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,10 +9,19 @@ import Table from 'react-bootstrap/Table';
 
 import Fuse from 'fuse.js';
 
-class Attendees extends React.Component {
-  constructor(props) {
-    super(props);
+const Attendees = ({ checkIn }) => {
+  const [allAttendees, setAllAttendees] = useState([])
+  const [fuse, setFuse] = useState();
 
+  const [attendees, setAttendees] = useState([]);
+  const [n, setN] = useState(0);
+  const [d, setD] = useState(0);
+  const [search, setSearch] = useState([]);
+  const [checkCheckedIn, setCheckCheckedIn] = useState(true);
+  const [checkNotCheckedIn, setCheckNotCheckedIn] = useState(true);
+
+
+  useEffect(() => {
     const fuseOptions = {
       keys: [
         "name",
@@ -20,70 +29,56 @@ class Attendees extends React.Component {
         "type"
       ]
     };
-
-    this.state = {
-      attendees: [],
-      checkCheckedIn: true,
-      checkNotCheckedIn: true,
-      search: ""
-    };
-
-    const uri = "https://connect.strategyunitwm.nhs.uk/nhsr23/api/attendees/" + "T";
+    const uri = "https://connect.strategyunitwm.nhs.uk/nhsr23/api/attendees/T";
     fetch(uri)
       .then(r => r.json())
       .then(r => {
-        this.setState({ attendees: r });;
-        this.allAttendees = r;
-        this.fuse = new Fuse(r, fuseOptions);
-        this.n = r.reduce((a, v) => a + (v.checked_in > 0), 0);
-        this.d = r.length;
+        setAllAttendees(r);
+        setFuse(new Fuse(r, fuseOptions));
+
+        setAttendees(r);
+        setN(r.reduce((a, v) => a + (v.checked_in > 0), 0));
+        setD(r.length);
       });
 
-    this.filterAttendees = this.filterAttendees.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
-    this.handleCheckCheckedIn = this.handleCheckCheckedIn.bind(this);
-    this.handleCheckNotCheckedIn = this.handleCheckNotCheckedIn.bind(this);
+  }, []);
+
+  const handleSearch = (s) => {
+    setSearch(s);
+    filterAttendees(checkCheckedIn, checkNotCheckedIn);
   }
 
-  handleSearch(s) {
-    this.setState({ search: s })
-    this.filterAttendees(this.state.checkCheckedIn, this.state.checkNotCheckedIn);
-  }
-
-  filterAttendees(a, b) {
-    const s = this.state.search;
+  const filterAttendees = (a, b) => {
+    const s = search;
     const attendees = !s
-      ? this.allAttendees
-      : this.fuse.search(s).map(r => r.item);
-
-    console.log(this.state.checkCheckedIn, this.state.checkNotCheckedIn);
+      ? allAttendees
+      : fuse.search(s).map(r => r.item);
 
     let f = [];
     if (a) {
       f = b ? attendees : attendees.filter(i => i.checked_in > 0);
     } else if (b) {
-      f = attendees.filter(i => i.checked_in == 0);
+      f = attendees.filter(i => i.checked_in === 0);
     }
 
-    this.setState({ attendees: f });
+    setAttendees(f);
   };
 
-  handleCheckCheckedIn() {
-    const v = !this.state.checkCheckedIn
-    this.setState({ checkCheckedIn: v });
-    this.filterAttendees(v, this.state.checkNotCheckedIn);
+  const handleCheckCheckedIn = () => {
+    const v = !checkCheckedIn
+    setCheckCheckedIn(v);
+    filterAttendees(v, checkNotCheckedIn);
   }
-  handleCheckNotCheckedIn() {
-    const v = !this.state.checkNotCheckedIn
-    this.setState({ checkNotCheckedIn: v });
-    this.filterAttendees(this.state.checkCheckedIn, v);
+  const handleCheckNotCheckedIn = () => {
+    const v = !checkNotCheckedIn
+    setCheckNotCheckedIn(v);
+    filterAttendees(checkCheckedIn, v);
   }
 
-
-  render() {
-    return (<>
+  return (
+    <>
       <h2>Attendees List</h2>
-      <p>Checked in: {this.n} / {this.d}</p>
+      <p>Checked in: {n} / {d}</p>
       <Form.Group>
         <InputGroup className="mb-3">
           <InputGroup.Text id="basic-addon1">filter attendees</InputGroup.Text>
@@ -91,7 +86,7 @@ class Attendees extends React.Component {
             placeholder="Search"
             aria-label="Search"
             aria-describedby="basic-addon1"
-            onChange={e => this.handleSearch(e.target.value)}
+            onChange={e => handleSearch(e.target.value)}
           />
         </InputGroup>
       </Form.Group>
@@ -102,8 +97,8 @@ class Attendees extends React.Component {
           name="checkedingroup"
           type="checkbox"
           id="checkedin"
-          checked={this.state.checkCheckedIn}
-          onChange={this.handleCheckCheckedIn}
+          checked={checkCheckedIn}
+          onChange={handleCheckCheckedIn}
         />
         <Form.Check
           inline
@@ -111,8 +106,8 @@ class Attendees extends React.Component {
           name="checkedingroup"
           type="checkbox"
           id="notcheckedin"
-          checked={this.state.checkNotCheckedIn}
-          onChange={this.handleCheckNotCheckedIn}
+          checked={checkNotCheckedIn}
+          onChange={handleCheckNotCheckedIn}
         />
       </div>
 
@@ -127,8 +122,8 @@ class Attendees extends React.Component {
         </thead>
         <tbody>
           {
-            this.state.attendees.map(a => (
-              <tr key={a.id} onClick={() => this.props.checkIn(a.id)}>
+            attendees.map(a => (
+              <tr key={a.id} onClick={() => checkIn(a.id)}>
                 <td>{a.name}</td>
                 <td>{a.email}</td>
                 <td>{a.type}</td>
@@ -138,8 +133,8 @@ class Attendees extends React.Component {
           }
         </tbody>
       </Table>
-    </>)
-  }
+    </>
+  );
 }
 
 export default Attendees;
