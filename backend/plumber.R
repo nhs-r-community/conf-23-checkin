@@ -73,3 +73,28 @@ function(res, req, day) {
     }
   )
 }
+
+#* Add a new attendee
+#* @param name:string The attendees name
+#* @param email:string The attendees email address
+#* @param type:string The type of this attendee, must be one of attendee, speaker, organiser, or wtv
+#* @param days:string Whether they are attending on Tuesday (T), Wednesday (W), or both days (TW)
+#* @post /attendee
+#* @serializer png
+function(name, email, type = "attendee", days = "TW") {
+  tryCatch(
+    {
+      plot(add_attendee(name, email, type, strsplit(days, "")[[1]]))
+    },
+    error = \(e) {
+      res$status <- switch(substring(e$message, 1, 22),
+        "'arg' should be one of" = 400,
+        500
+      )
+
+      list(
+        error = e$message
+      )
+    }
+  )
+}
