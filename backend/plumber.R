@@ -14,43 +14,7 @@ library(plumber)
 source("db_functions.R")
 source("send_email.R")
 
-#* @filter cors
-cors <- function(res) {
-  res$setHeader("Access-Control-Allow-Origin", "*")
-  plumber::forward()
-}
-
 #* @apiTitle NHS-R Conference 2023 Check-In
-
-
-#* Check's an attendee into the conference
-#* @param id:string The guid of the attendee
-#* @param date:string The date
-#* @serializer unboxedJSON
-#* @post /attendee/<id>/<date>
-#* @response 200 The details of the checked-in attendee.
-#* @response 400 The attendee has already been checked in
-#* @response 404 The attendee does not exist
-#* @response 500 Server side error occurred
-function(res, req, id, date) {
-  # TODO: the day should be calculated
-  tryCatch(
-    {
-      checkin(id, date, time = as.integer(Sys.time()))
-    },
-    error = \(e) {
-      res$status <- switch(e$message,
-        "attendee not found" = 404,
-        "already checked in" = 400,
-        500
-      )
-
-      list(
-        error = e$message
-      )
-    }
-  )
-}
 
 
 #* Get the list of attendees
@@ -97,6 +61,35 @@ function(res, req, name, email, type = "attendee", dates, send_email = TRUE) {
     error = \(e) {
       res$status <- switch(substring(e$message, 1, 22),
         "'arg' should be one of" = 400,
+        500
+      )
+
+      list(
+        error = e$message
+      )
+    }
+  )
+}
+
+#* Check's an attendee into the conference
+#* @param id:string The guid of the attendee
+#* @param date:string The date
+#* @serializer unboxedJSON
+#* @post /attendee/<id>/<date>
+#* @response 200 The details of the checked-in attendee.
+#* @response 400 The attendee has already been checked in
+#* @response 404 The attendee does not exist
+#* @response 500 Server side error occurred
+function(res, req, id, date) {
+  # TODO: the day should be calculated
+  tryCatch(
+    {
+      checkin(id, date, time = as.integer(Sys.time()))
+    },
+    error = \(e) {
+      res$status <- switch(e$message,
+        "attendee not found" = 404,
+        "already checked in" = 400,
         500
       )
 
