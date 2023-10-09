@@ -1,0 +1,33 @@
+library(blastula)
+library(qrcode)
+
+send_conf_email <- function(id, name, to) {
+  qr_path <- withr::local_file("qr_code.png")
+
+  # generate the qr code as a file on disk
+  png(qr_path)
+  plot(qrcode::qr_code(id))
+  dev.off()
+
+  img_string <- blastula::add_image(file = qr_path) # nolint
+  date_time <- blastula::add_readable_time()
+
+  body <- readLines("email_body.md") |>
+    paste(collapse = "\n") |>
+    glue::glue()
+
+  email <- blastula::compose_email(
+    body = blastula::md(body),
+    footer = blastula::md(glue::glue("Email sent on {date_time}."))
+  )
+
+  cred <- blastula::creds_file(".email")
+
+  email |>
+    blastula::smtp_send(
+      to = to,
+      from = cred$user,
+      subject = "NHS-R/pycom Conference 2023",
+      credentials = cred
+    )
+}

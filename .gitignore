@@ -1,3 +1,4 @@
 *.db
 .Rproj.user
 frontend/.env-cmdrc
+backend/.email
