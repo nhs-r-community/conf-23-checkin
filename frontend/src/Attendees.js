@@ -15,7 +15,7 @@ const Attendees = ({ checkIn }) => {
   const [attendees, setAttendees] = useState([]);
   const [n, setN] = useState(0);
   const [d, setD] = useState(0);
-  const [search, setSearch] = useState([]);
+  const [search, setSearch] = useState("");
   const [checkCheckedIn, setCheckCheckedIn] = useState(true);
   const [checkNotCheckedIn, setCheckNotCheckedIn] = useState(true);
 
@@ -48,10 +48,9 @@ const Attendees = ({ checkIn }) => {
   }
 
   const filterAttendees = (a, b) => {
-    const s = search;
-    const attendees = !s
+    const attendees = !search
       ? allAttendees
-      : fuse.search(s).map(r => r.item);
+      : fuse.search(search).map(r => r.item);
 
     let f = [];
     if (a) {
