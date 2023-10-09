@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Table from 'react-bootstrap/Table';
 
 import Fuse from 'fuse.js';
 
@@ -111,28 +110,16 @@ const Attendees = ({ checkIn }) => {
         />
       </div>
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Type</th>
-            <th>Checked In</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            attendees.map(a => (
-              <tr key={a.id} onClick={() => checkIn(a.id)}>
-                <td>{a.name}</td>
-                <td>{a.email}</td>
-                <td>{a.type}</td>
-                <td><FontAwesomeIcon icon={a.checked_in > 0 ? faCheck : faXmark} /></td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </Table>
+      <ul className="fa-ul">
+        {
+          attendees.map(a => (
+            <li className="attendee" key={a.id} onClick={() => checkIn(a.id)}>
+              <span className="fa-li"><FontAwesomeIcon icon={a.checked_in > 0 ? faCheck : faXmark} /></span>
+              <strong>{a.name}</strong> <i>{a.email}</i>
+            </li>
+          ))
+        }
+      </ul>
     </>
   );
 }
