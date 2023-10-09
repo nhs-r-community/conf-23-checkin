@@ -40,7 +40,7 @@ add_attendee <- function(
 
   DBI::dbAppendTable(db_con(), "attendees", df)
 
-  qrcode::qr_code(id)
+  id
 }
 
 checkin <- function(id, day, time = as.integer(Sys.time())) {

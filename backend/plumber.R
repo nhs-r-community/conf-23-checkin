@@ -12,6 +12,7 @@
 
 library(plumber)
 source("db_functions.R")
+source("send_email.R")
 
 #* @filter cors
 cors <- function(res) {
@@ -79,12 +80,19 @@ function(res, req, date = as.character(Sys.Date())) {
 #* @param email:string The attendees email address
 #* @param type:string The type of this attendee, must be one of attendee, speaker, organiser, or wtv
 #* @param dates:[string] The dates that this person will be attending
+#* @send_email bool Whether to send the attendee an email with their QR code or not
 #* @put /attendee
-#* @serializer png
-function(name, email, type = "attendee", dates) {
+#* @serializer text
+function(res, req, name, email, type = "attendee", dates, send_email = TRUE) {
   tryCatch(
     {
-      plot(add_attendee(name, email, type, dates))
+      id <- add_attendee(name, email, type, dates)
+
+      if (send_email) {
+        send_conf_email(id, name, email)
+      }
+
+      id
     },
     error = \(e) {
       res$status <- switch(substring(e$message, 1, 22),
