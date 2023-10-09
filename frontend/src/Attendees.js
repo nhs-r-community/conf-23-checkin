@@ -28,7 +28,10 @@ const Attendees = ({ checkIn }) => {
         "type"
       ]
     };
-    const uri = "https://connect.strategyunitwm.nhs.uk/nhsr23/api/attendees/T";
+
+    const date = new Date().toJSON().slice(0, 10);
+    const uri = `${process.env.REACT_APP_API_URI}/attendees/${date}`;
+
     fetch(uri)
       .then(r => r.json())
       .then(r => {

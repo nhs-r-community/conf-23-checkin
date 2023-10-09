@@ -34,13 +34,10 @@ function App() {
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (!pattern.test(id)) return;
 
-    const uri = "https://connect.strategyunitwm.nhs.uk/nhsr23/api/checkin/" + id;
+    const date = new Date().toJSON().slice(0, 10);
+    const uri = `${process.env.REACT_APP_API_URI}/attendee/${id}/${date}`;
 
-    const requestOptions = {
-      method: 'POST'
-    };
-
-    fetch(uri, requestOptions)
+    fetch(uri, { method: "POST" })
       .then(response => {
         const j = response.json();
 
