@@ -52,31 +52,6 @@ function(res, req, id, time = as.integer(Sys.time())) {
 }
 
 
-#* Find's an attendees id by email adddress
-#* @param email:string The email of the attendee
-#* @get /find_id_by_email/<email>
-#* @serializer text
-#* @response 200 The id of the attendee
-#* @response 404 The email does not exist
-#* @response 500 Multiple matches for this email found
-function(res, req, email) {
-  id <- email |>
-    URLdecode() |>
-    tolower() |>
-    trimws() |>
-    search_attendee_by_email()
-
-  if (length(id) == 0) {
-    res$status <- 404
-    "email not found"
-  } else if (length(id) > 1) {
-    res$status <- 500
-    "multiple matches found"
-  } else {
-    id
-  }
-}
-
 #* Get the list of attendees
 #* @param day:string The day, either T or W
 #* @serializer unboxedJSON

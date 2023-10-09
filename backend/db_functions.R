@@ -21,7 +21,10 @@ create_table <- function() {
   )
 }
 
-add_attendee <- function(name, email, type = c("attendee", "speaker", "organiser", "wtv"), days = c("T", "W")) {
+add_attendee <- function(
+    name, email,
+    type = c("attendee", "speaker", "organiser", "wtv"),
+    days = c("T", "W")) {
   type <- match.arg(type)
   days <- match.arg(days, several.ok = TRUE)
 
@@ -70,7 +73,10 @@ check_attendee <- function(id, day = c("T", "W")) {
   day <- match.arg(day)
 
   con <- db_con()
-  res <- DBI::dbSendQuery(con, "SELECT * FROM attendees WHERE id = ? AND day = ?")
+  res <- DBI::dbSendQuery(
+    con,
+    "SELECT * FROM attendees WHERE id = ? AND day = ?"
+  )
   withr::defer(DBI::dbClearResult(res))
 
   DBI::dbBind(res, list(id, day))
@@ -82,19 +88,14 @@ check_attendee <- function(id, day = c("T", "W")) {
   r
 }
 
-search_attendee_by_email <- function(email) {
-  con <- db_con()
-  res <- DBI::dbSendQuery(con, "SELECT DISTINCT id FROM attendees WHERE email = ?")
-  withr::defer(DBI::dbClearResult(res))
-  DBI::dbBind(res, list(email))
-  DBI::dbFetch(res)$id
-}
-
 get_attendees <- function(day = c("T", "W")) {
   day <- match.arg(day)
 
   con <- db_con()
-  res <- DBI::dbSendQuery(con, "SELECT id, name, email, type, checked_in FROM attendees WHERE day = ?")
+  res <- DBI::dbSendQuery(
+    con,
+    "SELECT id, name, email, type, checked_in FROM attendees WHERE day = ?"
+  )
   withr::defer(DBI::dbClearResult(res))
 
   DBI::dbBind(res, list(day))
