@@ -19,23 +19,23 @@ cors <- function(res) {
   plumber::forward()
 }
 
-#* @apiTitle NHS-R Conference 2023 Check-I
+#* @apiTitle NHS-R Conference 2023 Check-In
 
 
 #* Check's an attendee into the conference
 #* @param id:string The guid of the attendee
-#* @param time:int Unix timestamp of when to check the attendee in (0 is checked-out)
+#* @param date:string The date
 #* @serializer unboxedJSON
-#* @post /checkin/<id>
+#* @post /attendee/<id>/<date>
 #* @response 200 The details of the checked-in attendee.
 #* @response 400 The attendee has already been checked in
 #* @response 404 The attendee does not exist
 #* @response 500 Server side error occurred
-function(res, req, id, time = as.integer(Sys.time())) {
+function(res, req, id, date) {
   # TODO: the day should be calculated
   tryCatch(
     {
-      checkin(id, "T", time = as.integer(time))
+      checkin(id, date, time = as.integer(Sys.time()))
     },
     error = \(e) {
       res$status <- switch(e$message,
@@ -53,13 +53,13 @@ function(res, req, id, time = as.integer(Sys.time())) {
 
 
 #* Get the list of attendees
-#* @param day:string The day, either T or W
+#* @param date:string the date to get the list of attendees for
 #* @serializer unboxedJSON
-#* @get /attendees/<day>
-function(res, req, day) {
+#* @get /attendees/<date>
+function(res, req, date = as.character(Sys.Date())) {
   tryCatch(
     {
-      get_attendees(day)
+      get_attendees(date)
     },
     error = \(e) {
       res$status <- switch(e$message,
@@ -78,13 +78,13 @@ function(res, req, day) {
 #* @param name:string The attendees name
 #* @param email:string The attendees email address
 #* @param type:string The type of this attendee, must be one of attendee, speaker, organiser, or wtv
-#* @param days:string Whether they are attending on Tuesday (T), Wednesday (W), or both days (TW)
-#* @post /attendee
+#* @param dates:[string] The dates that this person will be attending
+#* @put /attendee
 #* @serializer png
-function(name, email, type = "attendee", days = "TW") {
+function(name, email, type = "attendee", dates) {
   tryCatch(
     {
-      plot(add_attendee(name, email, type, strsplit(days, "")[[1]]))
+      plot(add_attendee(name, email, type, dates))
     },
     error = \(e) {
       res$status <- switch(substring(e$message, 1, 22),

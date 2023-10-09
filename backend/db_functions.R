@@ -24,9 +24,8 @@ create_table <- function() {
 add_attendee <- function(
     name, email,
     type = c("attendee", "speaker", "organiser", "wtv"),
-    days = c("T", "W")) {
+    days = as.Date(c("2023-10-17", "2023-10-18"))) {
   type <- match.arg(type)
-  days <- match.arg(days, several.ok = TRUE)
 
   id <- uuid::UUIDgenerate()
 
@@ -44,9 +43,7 @@ add_attendee <- function(
   qrcode::qr_code(id)
 }
 
-checkin <- function(id, day = c("T", "W"), time = as.integer(Sys.time())) {
-  day <- match.arg(day)
-
+checkin <- function(id, day, time = as.integer(Sys.time())) {
   attendee <- check_attendee(id, day)
 
   stopifnot(
@@ -69,9 +66,7 @@ checkin <- function(id, day = c("T", "W"), time = as.integer(Sys.time())) {
   as.list(attendee[c("name", "email", "type")])
 }
 
-check_attendee <- function(id, day = c("T", "W")) {
-  day <- match.arg(day)
-
+check_attendee <- function(id, day) {
   con <- db_con()
   res <- DBI::dbSendQuery(
     con,
@@ -88,9 +83,7 @@ check_attendee <- function(id, day = c("T", "W")) {
   r
 }
 
-get_attendees <- function(day = c("T", "W")) {
-  day <- match.arg(day)
-
+get_attendees <- function(day) {
   con <- db_con()
   res <- DBI::dbSendQuery(
     con,
