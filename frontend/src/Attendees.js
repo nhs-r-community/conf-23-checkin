@@ -34,46 +34,40 @@ const Attendees = ({ checkIn }) => {
 
     fetch(uri)
       .then(r => r.json())
-      .then(r => {
-        setAllAttendees(r);
-        setFuse(new Fuse(r, fuseOptions));
-
-        setAttendees(r);
-        setN(r.reduce((a, v) => a + (v.checked_in > 0), 0));
-        setD(r.length);
-      });
-
+      .then(setAllAttendees);
   }, []);
 
-  const handleSearch = (s) => {
-    setSearch(s);
-    filterAttendees(checkCheckedIn, checkNotCheckedIn);
-  }
+  useEffect(() => {
+    setFuse(new Fuse(allAttendees, { keys: ["name", "email", "type"] }));
 
-  const filterAttendees = (a, b) => {
+    setAttendees(allAttendees);
+    setN(allAttendees.reduce((a, v) => a + (v.checked_in > 0), 0));
+    setD(allAttendees.length);
+  }, [allAttendees]);
+
+  useEffect(() => {
     const attendees = !search
-      ? allAttendees
+      ? allAttendees // Object.values(allAttendees)
       : fuse.search(search).map(r => r.item);
 
     let f = [];
-    if (a) {
-      f = b ? attendees : attendees.filter(i => i.checked_in > 0);
-    } else if (b) {
+    if (checkCheckedIn) {
+      f = checkNotCheckedIn ? attendees : attendees.filter(i => i.checked_in > 0);
+    } else if (checkNotCheckedIn) {
       f = attendees.filter(i => i.checked_in === 0);
     }
 
     setAttendees(f);
-  };
+  }, [search, checkCheckedIn, checkNotCheckedIn, allAttendees, fuse]);
 
+  const handleSearch = (s) => {
+    setSearch(s);
+  }
   const handleCheckCheckedIn = () => {
-    const v = !checkCheckedIn
-    setCheckCheckedIn(v);
-    filterAttendees(v, checkNotCheckedIn);
+    setCheckCheckedIn(!checkCheckedIn);
   }
   const handleCheckNotCheckedIn = () => {
-    const v = !checkNotCheckedIn
-    setCheckNotCheckedIn(v);
-    filterAttendees(checkCheckedIn, v);
+    setCheckNotCheckedIn(!checkNotCheckedIn);
   }
 
   return (
