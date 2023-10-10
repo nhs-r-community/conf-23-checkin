@@ -16,6 +16,9 @@ source("send_email.R")
 
 #* @apiTitle NHS-R Conference 2023 Check-In
 
+# web socket client list
+clients <- list()
+
 
 #* Get the list of attendees
 #* @param date:string the date to get the list of attendees for
@@ -84,7 +87,22 @@ function(res, req, id, date) {
   # TODO: the day should be calculated
   tryCatch(
     {
-      checkin(id, date, time = as.integer(Sys.time()))
+      time <- Sys.time()
+
+      checkin(id, date, time = as.integer(time))
+
+      results <- list(
+        id = id,
+        time = time
+      )
+
+      lapply(
+        clients,
+        \(client) client$send(
+          jsonlite::toJSON(results, auto_unbox = TRUE, pretty = TRUE)
+        )
+      )
+      results
     },
     error = \(e) {
       res$status <- switch(e$message,
@@ -96,6 +114,25 @@ function(res, req, id, date) {
       list(
         error = e$message
       )
+    }
+  )
+}
+
+
+#' @plumber
+function(pr) {
+  pr$websocket(
+    function(ws) {
+      id <- ws$request$uuid <- uuid::UUIDgenerate()
+      clients[[id]] <<- ws
+
+      ws$onMessage(\(binary, message) {
+        # no need to handle messages here
+      })
+
+      ws$onClose(\() {
+        clients[[id]] <<- NULL
+      })
     }
   )
 }
