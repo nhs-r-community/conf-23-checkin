@@ -23,16 +23,19 @@ function App() {
   const handleClose = () => {
     setResults(undefined);
     setScanning(true);
-    setShowAttendees(false);
+  }
+
+  function qrDetected(qr_data) {
+    setScanning(false);
+    if (!scanning) return;
+
+    var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!pattern.test(qr_data)) return;
+    checkIn(qr_data);
   }
 
   function checkIn(id) {
-    setScanning(false);
-    if (!scanning) return;
     setResults({ title: "Loading", body: "Please wait" });
-
-    var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!pattern.test(id)) return;
 
     const date = new Date().toJSON().slice(0, 10);
     const uri = `${process.env.REACT_APP_API_URI}/attendee/${id}/${date}`;
@@ -66,7 +69,7 @@ function App() {
         !showAttendees && <>
           <div style={styles.container}>
             <QrScanner
-              onDecode={checkIn}
+              onDecode={qrDetected}
               onError={(error) => console.log(error?.message)}
             />
           </div>
