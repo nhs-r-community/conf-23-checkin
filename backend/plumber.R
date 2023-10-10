@@ -89,12 +89,7 @@ function(res, req, id, date) {
     {
       time <- Sys.time()
 
-      checkin(id, date, time = as.integer(time))
-
-      results <- list(
-        id = id,
-        time = time
-      )
+      results <- checkin(id, date, time = as.integer(time))
 
       lapply(
         clients,

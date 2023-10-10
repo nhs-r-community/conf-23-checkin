@@ -63,7 +63,8 @@ checkin <- function(id, day, time = as.integer(Sys.time())) {
 
   stopifnot("error updating rows" = rn == 1)
 
-  as.list(attendee[c("name", "email", "type")])
+  attendee$checked_in <- time
+  as.list(attendee)
 }
 
 check_attendee <- function(id, day) {
