@@ -4,6 +4,16 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 function CheckInModal({ results, handleClose }) {
+
+  function checkOut() {
+    const date = new Date().toJSON().slice(0, 10);
+    const id = results.id;
+    const uri = `${process.env.REACT_APP_API_URI}/attendee/${id}/${date}?time=0`;
+
+    fetch(uri, { method: "POST" })
+      .then(() => handleClose());
+  }
+
   return (
     <Modal show={results !== undefined} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -11,7 +21,14 @@ function CheckInModal({ results, handleClose }) {
       </Modal.Header>
       <Modal.Body>{results?.body}
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="justify-content-between">
+        {
+          results?.title !== "Error" && <>
+            <Button variant="danger" onClick={checkOut}>
+              Uncheck-in
+            </Button>
+          </>
+        }
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>

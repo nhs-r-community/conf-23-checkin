@@ -47,23 +47,25 @@ checkin <- function(id, day, time = as.integer(Sys.time())) {
   attendee <- check_attendee(id, day)
 
   stopifnot(
-    "attendee not found" = nrow(attendee) != 0,
-    "already checked in" = is.na(attendee$checked_in) || time == 0
+    "attendee not found" = nrow(attendee) != 0
   )
 
-  con <- db_con()
-  res <- con |>
-    DBI::dbSendQuery(
-      "UPDATE attendees SET checked_in = ? WHERE id = ? and day = ?"
-    ) |>
-    DBI::dbBind(list(time, id, day))
-  withr::defer(DBI::dbClearResult(res))
+  if (is.na(attendee$checked_in) || attendee$checked_in == 0 || time == 0) {
+    con <- db_con()
+    res <- con |>
+      DBI::dbSendQuery(
+        "UPDATE attendees SET checked_in = ? WHERE id = ? and day = ?"
+      ) |>
+      DBI::dbBind(list(time, id, day))
+    withr::defer(DBI::dbClearResult(res))
 
-  rn <- DBI::dbGetRowsAffected(res)
+    rn <- DBI::dbGetRowsAffected(res)
 
-  stopifnot("error updating rows" = rn == 1)
+    stopifnot("error updating rows" = rn == 1)
 
-  attendee$checked_in <- time
+    attendee$checked_in <- time
+  }
+
   as.list(attendee)
 }
 

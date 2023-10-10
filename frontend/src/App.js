@@ -35,7 +35,7 @@ function App() {
   }
 
   function checkIn(id) {
-    setResults({ title: "Loading", body: "Please wait" });
+    setResults({ title: "Loading", id: id, body: "Please wait" });
 
     const date = new Date().toJSON().slice(0, 10);
     const uri = `${process.env.REACT_APP_API_URI}/attendee/${id}/${date}`;
@@ -47,11 +47,13 @@ function App() {
         if (!response.ok) {
           j.then(x => setResults({
             title: "Error",
+            id: id,
             body: x.error
           }))
         } else {
           j.then(x => setResults({
             title: "Checked In",
+            id: id,
             body: <>
               <b>Name</b>: {x.name} <br />
               <b>Email</b>: {x.email} <br />

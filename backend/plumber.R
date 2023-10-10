@@ -77,19 +77,18 @@ function(res, req, name, email, type = "attendee", dates, send_email = TRUE) {
 #* Check's an attendee into the conference
 #* @param id:string The guid of the attendee
 #* @param date:string The date
+#* @param time:int Unix timestamp of when to check the attendee in at
 #* @serializer unboxedJSON
 #* @post /attendee/<id>/<date>
 #* @response 200 The details of the checked-in attendee.
 #* @response 400 The attendee has already been checked in
 #* @response 404 The attendee does not exist
 #* @response 500 Server side error occurred
-function(res, req, id, date) {
+function(res, req, id, date, time = as.integer(Sys.time())) {
   # TODO: the day should be calculated
   tryCatch(
     {
-      time <- Sys.time()
-
-      results <- checkin(id, date, time = as.integer(time))
+      results <- checkin(id, date, time)
 
       lapply(
         clients,
@@ -102,7 +101,6 @@ function(res, req, id, date) {
     error = \(e) {
       res$status <- switch(e$message,
         "attendee not found" = 404,
-        "already checked in" = 400,
         500
       )
 
