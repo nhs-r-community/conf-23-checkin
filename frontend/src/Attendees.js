@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import useWebSocket from 'react-use-websocket';
 
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,35 +20,46 @@ const Attendees = ({ checkIn }) => {
   const [checkCheckedIn, setCheckCheckedIn] = useState(true);
   const [checkNotCheckedIn, setCheckNotCheckedIn] = useState(true);
 
+  const { lastMessage } = useWebSocket(process.env.REACT_APP_WS_URI);
 
   useEffect(() => {
-    const fuseOptions = {
-      keys: [
-        "name",
-        "email",
-        "type"
-      ]
-    };
+    if (!lastMessage) return;
 
+    try {
+      const { id, checked_in } = JSON.parse(lastMessage.data);
+      // we need to clone the dictionary in order to mutate it
+      const att = JSON.parse(JSON.stringify(allAttendees));
+
+      att[id].checked_in = (new Date(checked_in).getTime()) / 1000;
+
+      setAllAttendees(att);
+    } catch (e) { }
+    // using allAttendees without taking a dependency... is there a better solution?
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastMessage]);
+
+  useEffect(() => {
     const date = new Date().toJSON().slice(0, 10);
     const uri = `${process.env.REACT_APP_API_URI}/attendees/${date}`;
 
     fetch(uri)
       .then(r => r.json())
+      .then(r => Object.fromEntries(r.map(x => [x.id, x])))
       .then(setAllAttendees);
   }, []);
 
   useEffect(() => {
-    setFuse(new Fuse(allAttendees, { keys: ["name", "email", "type"] }));
+    const att = Object.values(allAttendees);
+    setFuse(new Fuse(att, { keys: ["name", "email", "type"] }));
 
-    setAttendees(allAttendees);
-    setN(allAttendees.reduce((a, v) => a + (v.checked_in > 0), 0));
-    setD(allAttendees.length);
+    setAttendees(att);
+    setN(att.reduce((a, v) => a + (v.checked_in > 0), 0));
+    setD(att.length);
   }, [allAttendees]);
 
   useEffect(() => {
     const attendees = !search
-      ? allAttendees // Object.values(allAttendees)
+      ? Object.values(allAttendees)
       : fuse.search(search).map(r => r.item);
 
     let f = [];
