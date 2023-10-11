@@ -18,7 +18,13 @@ send_conf_email <- function(id, name, to) {
 
   email <- blastula::compose_email(
     body = blastula::md(body),
-    footer = blastula::md(glue::glue("Email sent on {date_time}."))
+    footer = blastula::md(
+      glue::glue(
+        .sep = "<br /><br />",
+        "Email sent on {date_time}.",
+        "Please send any questions to [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net)"
+      )
+    )
   )
 
   cred <- blastula::creds_file(".email")
