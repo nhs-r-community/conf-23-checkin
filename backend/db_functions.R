@@ -4,7 +4,9 @@
 # make sure this package get's installed
 library(dbplyr)
 
-db_con <- function(db_path = "attendees.db", env = parent.frame()) {
+db_con <- function(env = parent.frame()) {
+  db_path <- file.path(Sys.getenv("DB_PATH", "."), "attendees.db")
+
   con <- DBI::dbConnect(RSQLite::SQLite(), db_path)
   withr::defer(DBI::dbDisconnect(con), envir = env)
   con
@@ -163,7 +165,7 @@ add_attendees_from_excel <- function(attendees, send_emails = TRUE) {
       dplyr::distinct(
         .data[["id"]],
         name = .data[["firstname"]],
-        .data[["email"]]
+        to = .data[["email"]]
       ) |>
       dplyr::collect() |>
       dplyr::filter(.data[["id"]] %in% added_attendees_ids) |>
