@@ -11,8 +11,6 @@
 #
 
 library(plumber)
-source("db_functions.R")
-source("send_email.R")
 
 #* @apiTitle NHS-R Conference 2023 Check-In
 
@@ -25,35 +23,62 @@ clients <- list()
 #* @serializer unboxedJSON
 #* @get /attendees/<date>
 function(res, req, date = as.character(Sys.Date())) {
-  tryCatch(
-    {
-      get_attendees(date)
-    },
-    error = \(e) {
-      res$status <- switch(e$message,
-        "'arg' should be one of “T”, “W”" = 400,
-        500
-      )
-
-      list(
-        error = e$message
-      )
-    }
-  )
+  get_attendees(date)
 }
 
+
+plumber::register_parser(
+  "nhsr_excel_attendees_file",
+  function(...) {
+    plumber::parser_read_file(\(filename) {
+      purrr::map(
+        c("2023-10-17" = 1, "2023-10-18" = 2),
+        ~ readxl::read_xlsx(filename, sheet = .x, skip = 1)
+      ) |>
+        dplyr::bind_rows(.id = "days") |>
+        janitor::clean_names() |>
+        dplyr::mutate(
+          dplyr::across(
+            "email",
+            purrr::compose(
+              stringr::str_to_lower,
+              stringr::str_trim
+            )
+          )
+        ) |>
+        dplyr::rename(type = "event_role")
+    })
+  },
+  fixed = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
+
+#* Upload a file
+#* @param file:file Excel file containing attendes
+#* @param send_emails:bool Whether to send emails or not
+#* @post /attendees/upload
+#* @parser multi
+#* @parser nhsr_excel_attendees_file
+#* @serializer text
+function(file, send_emails) {
+  add_attendees_from_excel(file[[1]], send_emails)
+}
+
+
 #* Add a new attendee
-#* @param name:string The attendees name
+#* @param firstname:string The attendees firstname
+#* @param surname:string The attendees surname
 #* @param email:string The attendees email address
-#* @param type:string The type of this attendee, must be one of attendee, speaker, organiser, or wtv
-#* @param dates:[string] The dates that this person will be attending
+#* @param type:string The type of this attendee, must be one of Attendee, Presenter, or Event Team
+#* @param days:[string] The dates that this person will be attending (yyyy-mm-dd)
 #* @send_email bool Whether to send the attendee an email with their QR code or not
 #* @put /attendee
 #* @serializer text
-function(res, req, name, email, type = "attendee", dates, send_email = TRUE) {
+function(
+    res, req, firstname, surname, email, type = "Attendee",
+    days = as.character(Sys.Date()), send_email = FALSE) {
   tryCatch(
     {
-      id <- add_attendee(name, email, type, dates)
+      id <- add_attendee(firstname, surname, email, type, days)
 
       if (send_email) {
         send_conf_email(id, name, email)

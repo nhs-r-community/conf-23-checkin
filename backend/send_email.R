@@ -30,4 +30,6 @@ send_conf_email <- function(id, name, to) {
       subject = "NHS-R/pycom Conference 2023",
       credentials = cred
     )
+
+  id
 }

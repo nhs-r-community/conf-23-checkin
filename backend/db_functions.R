@@ -1,37 +1,79 @@
+.data <- rlang::.data
+.env <- rlang::.env
+
+# make sure this package get's installed
+library(dbplyr)
+
 db_con <- function(db_path = "attendees.db", env = parent.frame()) {
   con <- DBI::dbConnect(RSQLite::SQLite(), db_path)
   withr::defer(DBI::dbDisconnect(con), envir = env)
   con
 }
 
-create_table <- function() {
+create_tables <- function() {
   con <- db_con()
 
-  DBI::dbCreateTable(
-    con,
-    "attendees",
-    list(
-      id = "TEXT",
-      name = "TEXT",
-      email = "TEXT",
-      type = "TEXT",
-      day = "TEXT",
-      checked_in = "INT"
+  cat("Creating tables:\n")
+  if (!DBI::dbExistsTable(con, "attendees")) {
+    cat("* Creating attendees\n")
+
+    DBI::dbCreateTable(
+      con,
+      "attendees",
+      list(
+        id = "TEXT",
+        firstname = "TEXT",
+        surname = "TEXT",
+        email = "TEXT",
+        type = "TEXT",
+        day = "TEXT",
+        checked_in = "INT"
+      )
     )
-  )
+  } else {
+    cat("* attendees already exists\n")
+  }
+
+  if (!DBI::dbExistsTable(con, "emails_sent")) {
+    cat("* Creating emails_sent\n")
+    DBI::dbCreateTable(
+      con,
+      "emails_sent",
+      list(
+        id = "TEXT"
+      )
+    )
+  } else {
+    cat("* emails_sent already exists\n")
+  }
 }
 
 add_attendee <- function(
-    name, email,
-    type = c("attendee", "speaker", "organiser", "wtv"),
-    days = as.Date(c("2023-10-17", "2023-10-18"))) {
-  type <- match.arg(type)
+    firstname, surname, email, type,
+    days = c("2023-10-17", "2023-10-18")) {
+  con <- db_con()
 
-  id <- uuid::UUIDgenerate()
+  attendee <- dplyr::tbl(con, "attendees") |>
+    dplyr::filter(.data[["email"]] == .env[["email"]]) |>
+    dplyr::collect()
+
+  if (nrow(attendee) > 0) {
+    id <- attendee$id[[1]]
+    days <- setdiff(days, attendee$day)
+
+    # if already been added for all the provided days
+    if (length(days) == 0) {
+      return(id)
+    }
+  } else {
+    # hasn't been added at all yet
+    id <- uuid::UUIDgenerate()
+  }
 
   df <- data.frame(
     id = id,
-    name = name,
+    firstname = firstname,
+    surname = surname,
     email = email,
     type = type,
     day = days,
@@ -44,7 +86,12 @@ add_attendee <- function(
 }
 
 checkin <- function(id, day, time = as.integer(Sys.time())) {
-  attendee <- check_attendee(id, day)
+  attendee <- check_attendee(id, day) |>
+    dplyr::mutate(
+      .before = "firstname",
+      name = paste(.data[["firstname"]], .data[["surname"]])
+    ) |>
+    dplyr::select(-"firstname", -"surname")
 
   stopifnot(
     "attendee not found" = nrow(attendee) != 0
@@ -87,13 +134,44 @@ check_attendee <- function(id, day) {
 }
 
 get_attendees <- function(day) {
-  con <- db_con()
-  res <- DBI::dbSendQuery(
-    con,
-    "SELECT id, name, email, type, checked_in FROM attendees WHERE day = ?"
-  )
-  withr::defer(DBI::dbClearResult(res))
+  dplyr::tbl(
+    db_con(),
+    "attendees"
+  ) |>
+    dplyr::filter(.data[["day"]] == .env[["day"]]) |>
+    dplyr::collect() |>
+    dplyr::transmute(
+      .data[["id"]],
+      name = paste(.data[["firstname"]], .data[["surname"]]),
+      .data[["email"]],
+      .data[["type"]],
+      .data[["checked_in"]]
+    )
+}
 
-  DBI::dbBind(res, list(day))
-  DBI::dbFetch(res)
+add_attendees_from_excel <- function(attendees, send_emails = TRUE) {
+  added_attendees_ids <- attendees |>
+    purrr::pmap_chr(add_attendee, .progress = TRUE)
+
+  if (send_emails) {
+    con <- db_con()
+    dplyr::tbl(con, "attendees") |>
+      dplyr::anti_join(
+        dplyr::tbl(con, "emails_sent"),
+        by = dplyr::join_by("id")
+      ) |>
+      dplyr::distinct(
+        .data[["id"]],
+        name = .data[["firstname"]],
+        .data[["email"]]
+      ) |>
+      dplyr::collect() |>
+      dplyr::filter(.data[["id"]] %in% added_attendees_ids) |>
+      purrr::pmap(send_conf_email, .progress = TRUE) |>
+      purrr::flatten_chr() |>
+      tibble::tibble(id = _) |>
+      DBI::dbAppendTable(con, "emails_sent", value = _)
+  }
+
+  return(length(added_attendees_ids))
 }
