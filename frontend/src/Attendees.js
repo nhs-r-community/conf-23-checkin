@@ -41,7 +41,12 @@ const Attendees = ({ checkIn, date }) => {
   const setAllAttendees = (r) => {
     allAttendees.current = Object.fromEntries(r.map(x => [x.id, x]));
 
-    setFuse(new Fuse(r, { keys: ["name", "email", "type"] }));
+    const fuseOptions = {
+      keys: ["name", "email", "type"],
+      threshold: 0.3,
+      ignoreLocation: true
+    }
+    setFuse(new Fuse(r, fuseOptions));
 
     setAttendees(r);
   };
