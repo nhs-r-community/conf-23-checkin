@@ -3,10 +3,9 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function CheckInModal({ results, handleClose }) {
+function CheckInModal({ results, handleClose, date }) {
 
   function checkOut() {
-    const date = new Date().toJSON().slice(0, 10);
     const id = results.id;
     const uri = `${process.env.REACT_APP_API_URI}/attendee/${id}/${date}?time=0`;
 

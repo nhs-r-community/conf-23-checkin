@@ -90,7 +90,7 @@ function App({ date }) {
           <Attendees checkIn={checkIn} date={date} />
         </>
       }
-      <CheckInModal results={results} handleClose={handleClose} />
+      <CheckInModal results={results} handleClose={handleClose} date={date} />
     </div>
   );
 }
