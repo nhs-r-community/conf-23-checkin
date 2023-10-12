@@ -38,21 +38,19 @@ const Attendees = ({ checkIn, date }) => {
     } catch (e) { }
   }, [lastMessage]);
 
-  const setAllAttendees = (r) => {
-    allAttendees.current = Object.fromEntries(r.map(x => [x.id, x]));
-
-    const fuseOptions = {
-      keys: ["name", "email", "type"],
-      threshold: 0.3,
-      ignoreLocation: true
-    }
-    setFuse(new Fuse(r, fuseOptions));
-  };
-
   useEffect(() => {
     const uri = `${process.env.REACT_APP_API_URI}/attendees/${date}`;
 
-    fetch(uri).then(r => r.json()).then(setAllAttendees);
+    fetch(uri).then(r => r.json()).then(r => {
+      allAttendees.current = Object.fromEntries(r.map(x => [x.id, x]));
+
+      const fuseOptions = {
+        keys: ["name", "email", "type"],
+        threshold: 0.3,
+        ignoreLocation: true
+      }
+      setFuse(new Fuse(r, fuseOptions));
+    });
   }, [date]);
 
   useEffect(() => {
