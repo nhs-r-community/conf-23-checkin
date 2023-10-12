@@ -15,7 +15,7 @@ const styles = {
   }
 }
 
-function App() {
+function App({ date }) {
   const [results, setResults] = useState();
   const [scanning, setScanning] = useState(true);
   const [showAttendees, setShowAttendees] = useState(false);
@@ -37,7 +37,6 @@ function App() {
   function checkIn(id) {
     setResults({ title: "Loading", id: id, body: "Please wait" });
 
-    const date = new Date().toJSON().slice(0, 10);
     const uri = `${process.env.REACT_APP_API_URI}/attendee/${id}/${date}`;
 
     fetch(uri, { method: "POST" })
@@ -88,7 +87,7 @@ function App() {
           <Button variant="danger" onClick={() => setShowAttendees(false)}>
             Hide Attendees
           </Button>
-          <Attendees checkIn={checkIn} />
+          <Attendees checkIn={checkIn} date={date} />
         </>
       }
       <CheckInModal results={results} handleClose={handleClose} />

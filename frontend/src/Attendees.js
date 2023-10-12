@@ -9,7 +9,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 import Fuse from 'fuse.js';
 
-const Attendees = ({ checkIn }) => {
+const Attendees = ({ checkIn, date }) => {
   const allAttendees = useRef({});
 
   const [fuse, setFuse] = useState();
@@ -47,11 +47,10 @@ const Attendees = ({ checkIn }) => {
   };
 
   useEffect(() => {
-    const date = new Date().toJSON().slice(0, 10);
     const uri = `${process.env.REACT_APP_API_URI}/attendees/${date}`;
 
     fetch(uri).then(r => r.json()).then(setAllAttendees);
-  }, []);
+  }, [date]);
 
   useEffect(() => {
     const attendees = !search
