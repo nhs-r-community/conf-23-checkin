@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
 
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -10,56 +10,52 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Fuse from 'fuse.js';
 
 const Attendees = ({ checkIn }) => {
-  const [allAttendees, setAllAttendees] = useState([])
+  const allAttendees = useRef({});
+
   const [fuse, setFuse] = useState();
 
   const [attendees, setAttendees] = useState([]);
-  const [n, setN] = useState(0);
-  const [d, setD] = useState(0);
   const [search, setSearch] = useState("");
   const [checkCheckedIn, setCheckCheckedIn] = useState(true);
   const [checkNotCheckedIn, setCheckNotCheckedIn] = useState(true);
 
   const { lastMessage } = useWebSocket(process.env.REACT_APP_WS_URI);
 
+  const getN = () => Object.values(allAttendees.current).reduce(
+    (a, v) => a + (v.checked_in > 0), 0
+  );
+  const getD = () => Object.keys(allAttendees.current).length;
+
   useEffect(() => {
     if (!lastMessage) return;
 
     try {
       const { id, checked_in } = JSON.parse(lastMessage.data);
-      // we need to clone the dictionary in order to mutate it
-      const att = JSON.parse(JSON.stringify(allAttendees));
 
-      att[id].checked_in = (new Date(checked_in).getTime()) / 1000;
+      const v = new Date(checked_in).getTime() / 1000;
 
-      setAllAttendees(att);
+      allAttendees.current[id].checked_in = v;
     } catch (e) { }
-    // using allAttendees without taking a dependency... is there a better solution?
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastMessage]);
+
+  const setAllAttendees = (r) => {
+    allAttendees.current = Object.fromEntries(r.map(x => [x.id, x]));
+
+    setFuse(new Fuse(r, { keys: ["name", "email", "type"] }));
+
+    setAttendees(r);
+  };
 
   useEffect(() => {
     const date = new Date().toJSON().slice(0, 10);
     const uri = `${process.env.REACT_APP_API_URI}/attendees/${date}`;
 
-    fetch(uri)
-      .then(r => r.json())
-      .then(r => Object.fromEntries(r.map(x => [x.id, x])))
-      .then(setAllAttendees);
+    fetch(uri).then(r => r.json()).then(setAllAttendees);
   }, []);
 
   useEffect(() => {
-    const att = Object.values(allAttendees);
-    setFuse(new Fuse(att, { keys: ["name", "email", "type"] }));
-
-    setAttendees(att);
-    setN(att.reduce((a, v) => a + (v.checked_in > 0), 0));
-    setD(att.length);
-  }, [allAttendees]);
-
-  useEffect(() => {
     const attendees = !search
-      ? Object.values(allAttendees)
+      ? Object.values(allAttendees.current)
       : fuse.search(search).map(r => r.item);
 
     let f = [];
@@ -70,7 +66,7 @@ const Attendees = ({ checkIn }) => {
     }
 
     setAttendees(f);
-  }, [search, checkCheckedIn, checkNotCheckedIn, allAttendees, fuse]);
+  }, [search, checkCheckedIn, checkNotCheckedIn, fuse]);
 
   const handleSearch = (s) => {
     setSearch(s);
@@ -85,7 +81,7 @@ const Attendees = ({ checkIn }) => {
   return (
     <>
       <h2>Attendees List</h2>
-      <p>Checked in: {n} / {d}</p>
+      <p>Checked in: {getN()} / {getD()}</p>
       <Form.Group>
         <InputGroup className="mb-3">
           <InputGroup.Text id="basic-addon1">filter attendees</InputGroup.Text>
