@@ -47,8 +47,6 @@ const Attendees = ({ checkIn, date }) => {
       ignoreLocation: true
     }
     setFuse(new Fuse(r, fuseOptions));
-
-    setAttendees(r);
   };
 
   useEffect(() => {
@@ -59,7 +57,7 @@ const Attendees = ({ checkIn, date }) => {
 
   useEffect(() => {
     const attendees = !search
-      ? Object.values(allAttendees.current)
+      ? Object.values(allAttendees.current).sort((a, b) => a.name.localeCompare(b.name))
       : fuse.search(search).map(r => r.item);
 
     let f = [];
