@@ -51,8 +51,12 @@ create_tables <- function() {
 }
 
 add_attendee <- function(
-    firstname, surname, email, type,
-    days = c("2023-10-17", "2023-10-18")) {
+  firstname,
+  surname,
+  email,
+  type,
+  days = c("2023-10-17", "2023-10-18")
+) {
   con <- db_con()
 
   attendee <- dplyr::tbl(con, "attendees") |>

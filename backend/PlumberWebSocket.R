@@ -1,4 +1,5 @@
-PlumberWebSocket <- R6::R6Class( # nolint
+PlumberWebSocket <- R6::R6Class(
+  # nolint
   "PlumberWebSocket",
   inherit = plumber::Plumber,
   public = list(

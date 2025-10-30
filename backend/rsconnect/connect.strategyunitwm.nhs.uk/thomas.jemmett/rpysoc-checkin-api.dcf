@@ -6,6 +6,6 @@ server: connect.strategyunitwm.nhs.uk
 envVars: DB_PATH
 hostUrl: https://connect.strategyunitwm.nhs.uk/__api__
 appId: 229
-bundleId: 865
-url: https://connect.strategyunitwm.nhs.uk/content/a22e0cbe-d85c-4536-a5d3-c4254f6e49c5/
+bundleId: 876
+url: https://connect.strategyunitwm.nhs.uk/rpysoc25/api/
 version: 1
