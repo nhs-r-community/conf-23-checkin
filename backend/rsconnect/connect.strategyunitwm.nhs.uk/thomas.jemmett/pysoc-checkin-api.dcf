@@ -1,10 +1,10 @@
-name: nhsr-checkin-api
-title: nhsr-checkin-api
+name: pysoc-checkin-api
+title: PYSOC 2025 Check In (API)
 username: thomas.jemmett
 account: thomas.jemmett
 server: connect.strategyunitwm.nhs.uk
 hostUrl: https://connect.strategyunitwm.nhs.uk/__api__
-appId: 151
-bundleId: 910
-url: https://connect.strategyunitwm.nhs.uk/nhsr23/api/
+appId: 225
+bundleId: 859
+url: https://connect.strategyunitwm.nhs.uk/pysoc25/api/
 version: 1
