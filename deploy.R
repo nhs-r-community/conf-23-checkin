@@ -3,7 +3,7 @@ deploy_backend <- function() {
 
   rsconnect::deployAPI(
     "backend",
-    appId = 225,
+    appId = 229,
     appName = "rpysoc-checkin-api",
     appTitle = "RPYSOC 2025 Check In (API)",
     envVars = c("DB_PATH")

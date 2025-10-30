@@ -1,11 +1,11 @@
-name: pysoc-checkin-api
+name: rpysoc-checkin-api
 title: RPYSOC 2025 Check In (API)
 username: thomas.jemmett
 account: thomas.jemmett
 server: connect.strategyunitwm.nhs.uk
 envVars: DB_PATH
 hostUrl: https://connect.strategyunitwm.nhs.uk/__api__
-appId: 225
-bundleId: 862
-url: https://connect.strategyunitwm.nhs.uk/pysoc25/api/
+appId: 229
+bundleId: 865
+url: https://connect.strategyunitwm.nhs.uk/content/a22e0cbe-d85c-4536-a5d3-c4254f6e49c5/
 version: 1
