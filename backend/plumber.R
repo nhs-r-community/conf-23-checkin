@@ -12,7 +12,7 @@
 
 library(plumber)
 
-#* @apiTitle NHS-R Conference 2023 Check-In
+#* @apiTitle RPYSOC 2025 Check In API
 
 # web socket client list
 clients <- list()
@@ -74,20 +74,28 @@ function(file, send_emails) {
 #* @put /attendee
 #* @serializer text
 function(
-    res, req, firstname, surname, email, type = "Attendee",
-    days = as.character(Sys.Date()), send_email = FALSE) {
+  res,
+  req,
+  firstname,
+  surname,
+  email,
+  type = "Attendee",
+  days = as.character(Sys.Date()),
+  send_email = FALSE
+) {
   tryCatch(
     {
       id <- add_attendee(firstname, surname, email, type, days)
 
       if (send_email) {
-        send_conf_email(id, name, email)
+        send_conf_email(id, firstname, email)
       }
 
       id
     },
     error = \(e) {
-      res$status <- switch(substring(e$message, 1, 22),
+      res$status <- switch(
+        substring(e$message, 1, 22),
         "'arg' should be one of" = 400,
         500
       )
@@ -117,17 +125,16 @@ function(res, req, id, date, time = as.integer(Sys.time())) {
 
       lapply(
         clients,
-        \(client) client$send(
-          jsonlite::toJSON(results, auto_unbox = TRUE, pretty = TRUE)
-        )
+        \(client) {
+          client$send(
+            jsonlite::toJSON(results, auto_unbox = TRUE, pretty = TRUE)
+          )
+        }
       )
       results
     },
     error = \(e) {
-      res$status <- switch(e$message,
-        "attendee not found" = 404,
-        500
-      )
+      res$status <- switch(e$message, "attendee not found" = 404, 500)
 
       list(
         error = e$message
