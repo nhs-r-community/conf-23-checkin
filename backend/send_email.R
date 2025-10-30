@@ -32,7 +32,7 @@ send_conf_email <- function(id, name, to) {
     blastula::smtp_send(
       to = to,
       from = cred$user,
-      subject = "NHS-R/pycom Conference 2023",
+      subject = "RPySOC 2025",
       credentials = cred
     )
 

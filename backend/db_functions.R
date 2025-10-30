@@ -55,7 +55,7 @@ add_attendee <- function(
   surname,
   email,
   type,
-  days = c("2023-10-17", "2023-10-18")
+  days = c("2025-11-13", "2025-11-14")
 ) {
   con <- db_con()
 

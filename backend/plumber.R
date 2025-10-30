@@ -32,7 +32,7 @@ plumber::register_parser(
   function(...) {
     plumber::parser_read_file(\(filename) {
       purrr::map(
-        c("2023-10-17" = 1, "2023-10-18" = 2),
+        c("2025-11-13" = 1, "2025-11-14" = 2),
         ~ readxl::read_xlsx(filename, sheet = .x, skip = 1)
       ) |>
         dplyr::bind_rows(.id = "days") |>
