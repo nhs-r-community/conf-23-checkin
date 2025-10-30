@@ -1,9 +1,12 @@
 deploy_backend <- function() {
+  readRenviron(".Renviron.production")
+
   rsconnect::deployAPI(
     "backend",
     appId = 225,
-    appName = "pysoc-checkin-api",
-    appTitle = "PYSOC 2025 Check In (API)"
+    appName = "rpysoc-checkin-api",
+    appTitle = "RPYSOC 2025 Check In (API)",
+    envVars = c("DB_PATH")
   )
 }
 
@@ -14,8 +17,8 @@ deploy_frontend <- function() {
   rsconnect::deployDoc(
     "frontend/build/index.html",
     appId = 226,
-    appName = "pysoc-checkin-frontend",
-    appTitle = "PYSOC 2025 Check In"
+    appName = "rpysoc-checkin-frontend",
+    appTitle = "RPYSOC 2025 Check In"
   )
 }
 

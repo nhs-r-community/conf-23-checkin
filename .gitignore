@@ -2,3 +2,6 @@
 .Rproj.user
 frontend/.env-cmdrc
 backend/.email
+
+.Renviron
+.Renviron*
