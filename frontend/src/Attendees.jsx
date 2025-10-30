@@ -20,7 +20,7 @@ const Attendees = ({ checkIn, date }) => {
   const [checkCheckedIn, setCheckCheckedIn] = useState(true);
   const [checkNotCheckedIn, setCheckNotCheckedIn] = useState(true);
 
-  const { lastMessage } = useWebSocket(process.env.REACT_APP_WS_URI);
+  const { lastMessage } = useWebSocket(import.meta.env.VITE_WS_URI);
 
   const [messageLog, setMessageLog] = useState([]);
 
@@ -56,7 +56,7 @@ const Attendees = ({ checkIn, date }) => {
   }, [lastMessage]);
 
   useEffect(() => {
-    const uri = `${process.env.REACT_APP_API_URI}/attendees/${date}`;
+    const uri = `${import.meta.env.VITE_API_URI}/attendees/${date}`;
 
     fetch(uri).then(r => r.json()).then(r => {
       allAttendees.current = Object.fromEntries(r.map(x => [x.id, x]));

@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Button from 'react-bootstrap/Button';
-import Attendees from './Attendees';
-import CheckInModal from './CheckInModal';
+import Attendees from './Attendees.jsx';
+import CheckInModal from './CheckInModal.jsx';
 
 const styles = {
   container: {
@@ -37,7 +37,7 @@ function App({ date }) {
   function checkIn(id) {
     setResults({ title: "Loading", id: id, body: "Please wait" });
 
-    const uri = `${process.env.REACT_APP_API_URI}/attendee/${id}/${date}`;
+    const uri = `${import.meta.env.VITE_API_URI}/attendee/${id}/${date}`;
 
     fetch(uri, { method: "POST" })
       .then(response => {

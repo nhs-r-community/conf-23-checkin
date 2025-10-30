@@ -7,7 +7,7 @@ function CheckInModal({ results, handleClose, date }) {
 
   function checkOut() {
     const id = results.id;
-    const uri = `${process.env.REACT_APP_API_URI}/attendee/${id}/${date}?time=0`;
+    const uri = `${import.meta.env.VITE_API_URI}/attendee/${id}/${date}?time=0`;
 
     fetch(uri, { method: "POST" })
       .then(() => handleClose());
