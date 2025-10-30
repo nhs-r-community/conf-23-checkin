@@ -12,8 +12,7 @@ send_conf_email <- function(id, name, to) {
   img_string <- blastula::add_image(file = qr_path) # nolint
   date_time <- blastula::add_readable_time()
 
-  body <- readLines("email_body.md") |>
-    paste(collapse = "\n") |>
+  body <- readr::read_file("email_body.md") |>
     glue::glue()
 
   email <- blastula::compose_email(
