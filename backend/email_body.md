@@ -1,6 +1,6 @@
 Hi {name} 👋,
 
-We can't wait to see you in London next week for the NHS-R/NHS.pycom Conference (RPySOC 2025)! On arrival please present the following QR code at registration (Level 6) to speed up the check-in process.
+We can't wait to see you in London next week for the NHS-R/NHS.pycom Conference (RPySOC 2025)! On arrival at Registration (Level 6) please present the following QR code at registration (Level 6) to speed up the check-in process.
 
 {img_string}
 
