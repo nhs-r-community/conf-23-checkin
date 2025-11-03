@@ -1,6 +1,6 @@
 Hi {name} 👋,
 
-We can't wait to see you in London next week for the NHS-R/NHS.pycom Conference (RPySOC 2025)! On arrival at Registration (Level 6) please present the following QR code at registration (Level 6) to speed up the check-in process.
+We can't wait to see you in London next week for the NHS-R/NHS.pycom Conference (RPySOC 2025)! On arrival at please present the following QR code at registration (Level 6) to speed up the check-in process.
 
 {img_string}
 
@@ -68,9 +68,9 @@ We have two parking spaces for [Blue Badge holders](https://wellcome.org/about-u
 
 #### Reserve a seat!
 
-If you would like us to reserve you a seat in the main auditorium please email us at nhs.rcommunity@nhs.net.
+If you would like us to reserve you a seat in the main auditorium please email us at [nhs.rcommunity\@nhs.net](mailto:nhs.rcommunity@nhs.net).
 
-For advice on travel, accessibility and venue information please see the [main conference website](https://nhsrcommunity.com/conference.html)
+For further advice on travel, accessibility and venue information please see the [main conference website](https://nhsrcommunity.com/conference.html)
 
 ### Social Programme
 
