@@ -1,10 +1,12 @@
+![](https://github.com/nhs-r-community/conference-checkin/frontend/blob/conf_banner.png?raw=true)
+
 Hi {name} 👋,
 
 We can't wait to see you in London next week for the NHS-R/NHS.pycom Conference (RPySOC 2025)! On arrival at please present the following QR code at registration (Level 6) to speed up the check-in process.
 
 {img_string}
 
-If you have any questions, please forward them to [nhs.rcommunity\@nhs.net](mailto:nhs.rcommunity@nhs.net), as this is an unmonitored email address.
+If you have any questions, please forward them to [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net), as this is an unmonitored email address.
 
 ## At the conference
 
@@ -18,7 +20,7 @@ By registering for this event ticket, you will qualify for the following:
 -   Attendance at the unconference (Friday 14th) at Wellcome Trust, London
 -   Food and beverages will be available at the venue.
 
-Please note that all catering provided as part of the conference will be vegan. Please notify us of any specific dietary requirements via [nhs.rcommunity\@nhs.net](mailto:nhs.rcommunity@nhs.net).
+Please note that all catering provided as part of the conference will be vegan. Please notify us of any specific dietary requirements via [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net).
 
 ### Venue info
 
@@ -68,12 +70,12 @@ We have two parking spaces for [Blue Badge holders](https://wellcome.org/about-u
 
 #### Reserve a seat!
 
-If you would like us to reserve you a seat in the main auditorium please email us at [nhs.rcommunity\@nhs.net](mailto:nhs.rcommunity@nhs.net).
+If you would like us to reserve you a seat in the main auditorium please email us at [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net).
 
 For further advice on travel, accessibility and venue information please see the [main conference website](https://nhsrcommunity.com/conference.html)
 
 ### Social Programme
 
-We have opted not to arrange any formal social events this year, but invite anyone to post on the #conference Slack channel if you want to propose a meet up at a particular place and time.
-
 Some of the Strategy Unit Data Science team will be heading to [The Market Halls](https://markethalls.co.uk/) for food on Thursday evening, then to [NQ64](https://nq64.co.uk/soho/) for some retro gaming fun afterwards. If you'd like to join us, message Tom Jemmett on Slack! NB we are not planning on booking tables, so the venue may not be able to accommodate everyone if lots of people join, but there are plenty of other restaurants around!
+
+Also, feel free to suggest alternative arrangements and invite people, using the #conference channel on our Slack!
