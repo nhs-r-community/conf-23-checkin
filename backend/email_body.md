@@ -66,7 +66,7 @@ There are also [Santander docking stations](https://tfl.gov.uk/modes/cycling/san
 If you’re using a taxi, there are drop off points by our:
 
 - main visitor entrance at 215 Euston Road (raised kerb)
-- staff-only entrance on Gower Place (raised and dropped kerb). It’s a short distance from here to our main visitor entrance at the front of the building.
+- staff-only entrance on Gower Place (raised and dropped kerb). It's a short distance from here to our main visitor entrance at the front of the building.
 
 We have two parking spaces for [Blue Badge holders](https://wellcome.org/about-us/contact-us#accessibility). 
 
