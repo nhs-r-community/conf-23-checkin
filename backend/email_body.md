@@ -1,44 +1,81 @@
+![](https://github.com/nhs-r-community/conference-checkin/backend/blob/rpysoc_banner.png?raw=true)
+
 Hi {name} 👋,
 
-We can't wait to see you in Birmingham next week for the NHS-R/NHS.pycom Conference! On arrival please present the
-following QR code to speed up the check-in process.
+We can't wait to see you in London next week for the NHS-R/NHS.pycom Conference (RPySOC 2025)! On arrival at please present the following QR code at registration (Level 6) to speed up the check-in process.
 
 {img_string}
 
-If you have any questions, please forward them to [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net), as this is an
-unmonitored email address.
+If you have any questions, please forward them to [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net), as this is an unmonitored email address.
 
 ## At the conference
 
-Please may we kindly ask that you record all conference talk related questions via the [NHS-R Community Slack](https://nhsrcommunity.slack.com/join/shared_invite/zt-arabo68y-_Uv5uU2dmtfe8mk5ing9Fg#/shared-invite/email).
+Please may we kindly ask that you record all conference talk related questions via the [NHS-R Community Slack](https://nhsrcommunity.slack.com/join/shared_invite/zt-arabo68y-_Uv5uU2dmtfe8mk5ing9Fg#/shared-invite/email). We have a special channel for all things #conference!
 
 ### Ticket Information
 
 By registering for this event ticket, you will qualify for the following:
 
-- Attendance to the full-day event at Edgbaston Stadium
-- Access to additional in-person activities (see below)
-- Food and beverages will be available at the venue. 
+-   Attendance to the full-day event at Wellcome Trust, London
+-   Attendance at the unconference (Friday 14th) at Wellcome Trust, London
+-   Food and beverages will be available at the venue.
 
-Please note that all catering provided as part of the conference will be vegan or vegetarian. Please notify us of any specific dietary requirements via [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net).
+Please note that all catering provided as part of the conference will be vegan. Please notify us of any specific dietary requirements via [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net).
 
-### Getting to the venue
+### Venue info
 
-If you are coming via public transport, from New Street Station you can catch the 45 or 47 buses from stand NS8.
-These buses are relatively frequent and take about 17 minutes to get to the venue.
+Address: Wellcome Trust, Gibbs Building, 215 Euston Road, London NW1 2BE
 
-If you are cycling from the city centre, you might want to take the A38 which has a seperated cycle lane.
+#### TUBE
 
-If you are driving there are parking facilities on site.
+The nearest underground stations are:
 
-### Accessibility
+Euston Square
+Euston
+Warren Street 
+King’s Cross St Pancras
+Euston Square has step-free access between the platform and street level from the Westbound platform only.
 
-Accessibility information can be found on the [Edgbaston](https://edgbaston.com/events/) website and at [accessable.co.uk](https://www.accessable.co.uk/birmingham-city-council/access-guides/edgbaston-cricket-club#22525f31-f8b4-407c-b9b7-ea441da91e90).
+Find out how to get to us by tube with Transport for [London’s journey planner](https://tfl.gov.uk/plan-a-journey/).
 
-Please note that we have not been involved in the verification of the information recorded on the websites listed above.
+#### TRAIN
 
-### Additional Conference Related Activities
+The nearest mainline stations are:
 
-A post-conference ‘speed dating’ inspired networking session will be hosted at Edgbaston Stadium (from 17:15 until 18:00) to provide community member’s with an opportunity to be introduced to other event attendees in the afternoon of Tuesday 17<sup>th</sup> October 2023 immediately following the last session of the day.
+Euston
+King’s Cross
+St Pancras International
 
-A post-conference social in the evening of Tuesday 17<sup>th</sup> October 2023 (from 20:00 till late) at [NQ64](https://nq64.co.uk/birmingham/), which is a short walk from the city centre. If you want to know more details, speak to one of the team at check-in and they can let you know.
+#### BUS
+
+The following buses stop close to our main entrance at 215 Euston Road:
+
+18, 30, 73, 205, 390
+
+Find out how to get to us by bus with Transport for [London’s journey planner](https://tfl.gov.uk/plan-a-journey/).
+
+#### BIKE
+
+There are bike stands near the main entrance of Wellcome Collection on Euston Road, and at the side of the building on Gordon Street. 
+
+There are also [Santander docking stations](https://tfl.gov.uk/modes/cycling/santander-cycles) behind the building on Gower Place. 
+
+#### CAR
+
+If you’re using a taxi, there are drop off points by our:
+
+main visitor entrance at 215 Euston Road (raised kerb)
+staff-only entrance on Gower Place (raised and dropped kerb). It’s a short distance from here to our main visitor entrance at the front of the building.
+We have two parking spaces for [Blue Badge holders](https://wellcome.org/about-us/contact-us#accessibility). 
+
+#### Reserve a seat!
+
+If you would like us to reserve you a seat in the main auditorium please email us at [nhs.rcommunity@nhs.net](mailto:nhs.rcommunity@nhs.net).
+
+For further advice on travel, accessibility and venue information please see the [main conference website](https://nhsrcommunity.com/conference.html)
+
+### Social Programme
+
+Some of the Strategy Unit Data Science team will be heading to [The Market Halls](https://markethalls.co.uk/) for food on Thursday evening, then to [NQ64](https://nq64.co.uk/soho/) for some retro gaming fun afterwards. If you'd like to join us, message Tom Jemmett on Slack! NB we are not planning on booking tables, so the venue may not be able to accommodate everyone if lots of people join, but there are plenty of other restaurants around!
+
+Also, feel free to suggest alternative arrangements and invite people, using the #conference channel on our Slack!
