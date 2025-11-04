@@ -30,10 +30,11 @@ Address: Wellcome Trust, Gibbs Building, 215 Euston Road, London NW1 2BE
 
 The nearest underground stations are:
 
-Euston Square
-Euston
-Warren Street 
-King’s Cross St Pancras
+- Euston Square
+- Euston
+- Warren Street 
+- King's Cross St Pancras
+
 Euston Square has step-free access between the platform and street level from the Westbound platform only.
 
 Find out how to get to us by tube with Transport for [London’s journey planner](https://tfl.gov.uk/plan-a-journey/).
@@ -42,9 +43,9 @@ Find out how to get to us by tube with Transport for [London’s journey planner
 
 The nearest mainline stations are:
 
-Euston
-King’s Cross
-St Pancras International
+- Euston
+- King's Cross
+- St Pancras International
 
 #### BUS
 
@@ -64,8 +65,9 @@ There are also [Santander docking stations](https://tfl.gov.uk/modes/cycling/san
 
 If you’re using a taxi, there are drop off points by our:
 
-main visitor entrance at 215 Euston Road (raised kerb)
-staff-only entrance on Gower Place (raised and dropped kerb). It’s a short distance from here to our main visitor entrance at the front of the building.
+- main visitor entrance at 215 Euston Road (raised kerb)
+- staff-only entrance on Gower Place (raised and dropped kerb). It's a short distance from here to our main visitor entrance at the front of the building.
+
 We have two parking spaces for [Blue Badge holders](https://wellcome.org/about-us/contact-us#accessibility). 
 
 #### Reserve a seat!
