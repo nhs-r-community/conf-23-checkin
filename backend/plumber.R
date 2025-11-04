@@ -31,9 +31,12 @@ plumber::register_parser(
   "nhsr_excel_attendees_file",
   function(...) {
     plumber::parser_read_file(\(filename) {
+      sheets <- readxl::excel_sheets(filename) |>
+        purrr::keep(stringr::str_detect, pattern = "\\d{4}-\\d{2}-\\d{2}")
+
       purrr::map(
-        c("2025-11-13" = 1, "2025-11-14" = 2),
-        ~ readxl::read_xlsx(filename, sheet = .x, skip = 1)
+        purrr::set_names(sheets),
+        ~ readxl::read_xlsx(filename, sheet = .x)
       ) |>
         dplyr::bind_rows(.id = "days") |>
         janitor::clean_names() |>
@@ -45,8 +48,7 @@ plumber::register_parser(
               stringr::str_trim
             )
           )
-        ) |>
-        dplyr::rename(type = "event_role")
+        )
     })
   },
   fixed = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
