@@ -44,7 +44,7 @@ Find out how to get to us by tube with Transport for [London’s journey planner
 The nearest mainline stations are:
 
 - Euston
-- King’s Cross
+- King's Cross
 - St Pancras International
 
 #### BUS
