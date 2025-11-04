@@ -33,7 +33,7 @@ The nearest underground stations are:
 - Euston Square
 - Euston
 - Warren Street 
-- King’s Cross St Pancras
+- King's Cross St Pancras
 
 Euston Square has step-free access between the platform and street level from the Westbound platform only.
 
