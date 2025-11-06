@@ -9,6 +9,7 @@ send_conf_email <- function(id, name, to) {
   plot(qrcode::qr_code(id))
   dev.off()
 
+  rpysoc_banner <- blastula::add_image(file = "rpysoc_banner.png") # nolint
   img_string <- blastula::add_image(file = qr_path) # nolint
   date_time <- blastula::add_readable_time()
 

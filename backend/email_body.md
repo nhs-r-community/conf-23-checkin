@@ -1,4 +1,4 @@
-![](https://github.com/nhs-r-community/conference-checkin/backend/blob/rpysoc_banner.png?raw=true)
+{rpysoc_banner}
 
 Hi {name} 👋,
 
